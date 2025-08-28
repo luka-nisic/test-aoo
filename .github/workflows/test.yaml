@@ -1,5 +1,4 @@
-name: Build and Release App
-
+name: GitHub Local
 on:
   push:
     branches:
