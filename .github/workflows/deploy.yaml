@@ -1,0 +1,64 @@
+name: Build and Release App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Specify the release version (e.g., v1.0.0)'
+        required: true
+        default: 'dev'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Set version-related environment variables
+      - name: Set Version, Git SHA, and Build Time
+        id: vars
+        run: |
+          # Get version from input or set default
+          VERSION=${{ github.event.inputs.version }}
+          GIT_SHA=$(git rev-parse --short HEAD)
+          BUILD_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          echo "APP_VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "GIT_SHA=${GIT_SHA}" >> $GITHUB_ENV
+          echo "BUILD_TIME=${BUILD_TIME}" >> $GITHUB_ENV
+
+      # Build Docker image with versioning info
+      - name: Build Docker Image
+        run: |
+          docker build \
+            --build-arg APP_VERSION=${{ env.APP_VERSION }} \
+            --build-arg GIT_SHA=${{ env.GIT_SHA }} \
+            --build-arg BUILD_TIME=${{ env.BUILD_TIME }} \
+            -t myapp:${{ env.APP_VERSION }} .
+
+      # Push Docker image to registry (adjust if using DockerHub, ECR, etc.)
+      - name: Push Docker Image to Registry
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push myapp:${{ env.APP_VERSION }}
+
+      # Save the Docker image as an artifact
+      - name: Save Docker Image as Artifact
+        uses: actions/upload-artifact@
