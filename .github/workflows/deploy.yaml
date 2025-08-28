@@ -47,10 +47,11 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build \
-            --build-arg APP_VERSION=${{ env.APP_VERSION }} \
-            --build-arg GIT_SHA=${{ env.GIT_SHA }} \
-            --build-arg BUILD_TIME=${{ env.BUILD_TIME }} \
-            -t myrepo/myapp:${{ env.APP_VERSION }} .
+            --build-arg APP_VERSION=${APP_VERSION:-latest} \
+            --build-arg GIT_SHA=d858a4a \
+            --build-arg BUILD_TIME=2025-08-28T17:35:45Z \
+            -t myrepo/myapp:${APP_VERSION:-latest} .
+
 
       # Log in to Docker registry (DockerHub or your private registry)
       - name: Log in to DockerHub
