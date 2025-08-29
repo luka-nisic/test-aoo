@@ -10,6 +10,7 @@ app = FastAPI()
 APP_VERSION = os.getenv("APP_VERSION", "dev")
 GIT_SHA = os.getenv("GIT_SHA", "unknown")
 BUILD_TIME = os.getenv("BUILD_TIME", "unknown")
+APP_NAME=test-aoo
 
 # Prometheus Metrics
 REQUEST_COUNT = Counter(
@@ -26,7 +27,7 @@ APP_INFO = Gauge(
 )
 
 # Set the version and other metadata in the gauge
-APP_INFO.labels(version=APP_VERSION, git_sha=GIT_SHA, build_time=BUILD_TIME).set(1)
+APP_INFO.labels(version=APP_VERSION, git_sha=GIT_SHA, build_time=BUILD_TIME, app_name=APP_NAME).set(1)
 
 # Middleware to track metrics
 @app.middleware("http")
