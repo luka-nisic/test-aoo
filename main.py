@@ -3,7 +3,7 @@ from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTEN
 import time
 import os
 from starlette.responses import Response
-###
+#####
 app = FastAPI()
 
 # Get version information from environment variables
