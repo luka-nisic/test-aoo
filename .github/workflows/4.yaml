@@ -13,6 +13,12 @@ on:
     tags:
       - v*
   pull_request:
+  workflow_dispatch:
+  inputs:
+    version:
+      description: 'Version tag (e.g., 1.0.0)'
+      required: true
+      default: 'dev'
   # This creates an environment variable called `IMAGE_NAME ` with the value `ghtoken_product_demo`.
 env:
   IMAGE_NAME: ghtoken_product_demo
