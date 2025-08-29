@@ -23,7 +23,7 @@ REQUEST_LATENCY = Histogram(
 
 # Custom gauge for app version
 APP_INFO = Gauge(
-    "app_info", "Application info and version", ["version", "git_sha", "build_time"]
+    "app_info", "Application info and version", ["version", "git_sha", "build_time", "app_name"]
 )
 
 # Set the version and other metadata in the gauge
