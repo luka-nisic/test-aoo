@@ -10,7 +10,7 @@ app = FastAPI()
 APP_VERSION = os.getenv("APP_VERSION", "dev")
 GIT_SHA = os.getenv("GIT_SHA", "unknown")
 BUILD_TIME = os.getenv("BUILD_TIME", "unknown")
-APP_NAME=test-aoo
+APP_NAME='test-aoo'
 
 # Prometheus Metrics
 REQUEST_COUNT = Counter(
