@@ -7,6 +7,13 @@ WORKDIR /app
 # Step 3: Copy the requirements.txt file into the container
 COPY requirements.txt .
 
+ARG VERSION=dev
+
+ENV APP_VERSION=$VERSION
+
+RUN echo "Building image with version: $APP_VERSION"
+
+
 # Step 4: Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
